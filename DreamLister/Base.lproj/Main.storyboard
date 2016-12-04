@@ -32,12 +32,31 @@
                                     <segment title="Price"/>
                                     <segment title="Title"/>
                                 </segments>
+                                <color key="tintColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                             </segmentedControl>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="sWr-xq-KXr">
+                                <rect key="frame" x="16" y="132" width="343" height="535"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="PjZ-Xd-ZkT">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PjZ-Xd-ZkT" id="2Y7-lx-osc">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="7T7-ub-RRW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="A7B-Bi-xPS"/>
+                            <constraint firstItem="sWr-xq-KXr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="CvY-w6-8YT"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="sWr-xq-KXr" secondAttribute="trailing" id="Cyi-R2-ZgF"/>
+                            <constraint firstItem="sWr-xq-KXr" firstAttribute="top" secondItem="7T7-ub-RRW" secondAttribute="bottom" constant="20" id="Frp-ra-oxW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="7T7-ub-RRW" secondAttribute="trailing" constant="20" id="RxC-i0-2NC"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="sWr-xq-KXr" secondAttribute="bottom" id="nWF-fd-lBL"/>
                             <constraint firstItem="7T7-ub-RRW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="osB-Va-H9i"/>
                         </constraints>
                     </view>
