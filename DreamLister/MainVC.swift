@@ -93,8 +93,26 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFe
 	// MARK: - NSFetchResultController
 	func attemptFetch() {
 		let fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
+		
+		// SortTypes
 		let dateSort = NSSortDescriptor(key: "createdOn", ascending: false)
-		fetchRequest.sortDescriptors = [dateSort]
+		let priceSort = NSSortDescriptor(key: "price", ascending: true)
+		let titleSort = NSSortDescriptor(key: "title", ascending: true)
+		
+		switch(segmentSorter.selectedSegmentIndex) {
+		case 0:
+			fetchRequest.sortDescriptors = [dateSort]
+			break
+		case 1:
+			fetchRequest.sortDescriptors = [priceSort]
+			break
+		case 2:
+			fetchRequest.sortDescriptors = [titleSort]
+			break
+		default:
+			fetchRequest.sortDescriptors = [dateSort]
+		}
+		
 		
 		let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
 		controller.delegate = self
@@ -108,6 +126,12 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFe
 			print("\(error)")
 		}
 	}
+	
+	@IBAction func updateSortType(_ sender: UISegmentedControl) {
+		attemptFetch()
+		needListTableView.reloadData()
+	}
+	
 	
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		needListTableView.beginUpdates()

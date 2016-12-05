@@ -15,20 +15,26 @@ extension String {
 	}
 }
 
-class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	@IBOutlet weak var titleTxtFld: CustomTextField!
 	@IBOutlet weak var priceTxtFld: CustomTextField!
 	@IBOutlet weak var detailsTxtFld: CustomTextField!
 	@IBOutlet weak var storePickerView: UIPickerView!
+	@IBOutlet weak var imagePickerThumb: UIImageView!
+	
 	
 	var stores = [Store]()
 	var itemToEdit: Item?
+	var imagePicker: UIImagePickerController!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 		storePickerView.delegate = self
 		storePickerView.dataSource = self
+		
+		imagePicker = UIImagePickerController()
+		imagePicker.delegate = self
 		
 		// Clear the text from back button on NavBar
 		if let topItem = self.navigationController?.navigationBar.topItem {
@@ -59,12 +65,16 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
 	// Save item info after creation or update
 	func saveItem() {
 		let item: Item!
+		let itemImage = Image(context: context)
+		itemImage.image = imagePickerThumb.image
 		
 		if itemToEdit == nil {
 			item = Item(context: context)
 		} else {
 			item = itemToEdit
 		}
+		
+		item.toImage = itemImage
 		
 		if let newTitle = titleTxtFld.text {
 			item.title = newTitle
@@ -75,6 +85,7 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
 		if let newDetails = detailsTxtFld.text {
 			item.details = newDetails
 		}
+		item.toImage = itemImage
 		item.toStore = stores[storePickerView.selectedRow(inComponent: 0)]
 		
 		ad.saveContext()
@@ -86,6 +97,10 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
 			titleTxtFld.text = item.title
 			priceTxtFld.text = "\(item.price)"
 			detailsTxtFld.text = item.details
+			if let itemImage = item.toImage?.image as? UIImage {
+				imagePickerThumb.image = itemImage
+			}
+			
 			
 			// Get the correct store row
 			if let store = item.toStore {
@@ -132,6 +147,7 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
 	// MARK: - Button Actions
 	
 	@IBAction func onNewImgPress(_ sender: UIButton) {
+		pickNewImg()
 	}
 	
 	@IBAction func onSaveItemPress(_ sender: UIButton) {
@@ -143,8 +159,23 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
 		_ = navigationController?.popViewController(animated: true)
 	}
 	
-	// MARK: - Fetch Request for stores
+	// MARK: - UIImagePickerController and UINavigationController Delegate functions
 	
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+		if let img = info[UIImagePickerControllerOriginalImage] as? UIImage {
+			imagePickerThumb.image = img
+		}
+		imagePicker.dismiss(animated: true, completion: nil)
+	}
+	
+	
+	// Call ImagePickerController
+	func pickNewImg() {
+		present(imagePicker, animated: true, completion: nil)
+	}
+	
+	
+	// MARK: - Fetch Request for stores
 	func getStores() {
 		let fetchRequest: NSFetchRequest<Store> = Store.fetchRequest()
 		let nameSort = NSSortDescriptor(key: "name", ascending: true)
@@ -161,10 +192,6 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
 	
 	
 	// MARK: - TEST DATA FOR STORE ARRAY
-	
-	func clearStoreData() {
-		// Delete Store info
-	}
 	
 	func generateStoreData() {
 		let store = Store(context: context)
