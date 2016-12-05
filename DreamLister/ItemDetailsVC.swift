@@ -102,8 +102,13 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
 		}
 	}
 	
-	
-	
+	// Delete existing item
+	func deleteItem() {
+		if itemToEdit != nil {
+			context.delete(itemToEdit!)
+			ad.saveContext()
+		}
+	}
 	
 	// MARK: - UIPickerView Delegate and Datasource functions
 	
@@ -131,6 +136,10 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
 	
 	@IBAction func onSaveItemPress(_ sender: UIButton) {
 		saveItem()
+		_ = navigationController?.popViewController(animated: true)
+	}
+	@IBAction func onItemDeletePress(_ sender: UIBarButtonItem) {
+		deleteItem()
 		_ = navigationController?.popViewController(animated: true)
 	}
 	
