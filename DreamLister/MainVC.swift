@@ -127,11 +127,6 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFe
 		}
 	}
 	
-	@IBAction func updateSortType(_ sender: UISegmentedControl) {
-		attemptFetch()
-		needListTableView.reloadData()
-	}
-	
 	
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		needListTableView.beginUpdates()
@@ -171,8 +166,11 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFe
 		}
 	}
 	
-	// MARK: - ITEM CONTROL
-	
+	// MARK: - Sort Segment control
+	@IBAction func updateSortType(_ sender: UISegmentedControl) {
+		attemptFetch()
+		needListTableView.reloadData()
+	}
 	
 	
 	// MARK: - TEST DATA GENERATOR
